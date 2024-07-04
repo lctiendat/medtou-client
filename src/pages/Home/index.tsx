@@ -137,9 +137,9 @@ const Home: React.FC = () => {
             { latitude: currentPosition.lat, longitude: currentPosition.lng },
             { latitude: element.lat, longitude: element.lon }
           ),
-          name: element.tags['name:en'] || 'Nha thuoc',
-          lat : element.lat,
-          lng : element.lon
+          name: element.tags['name:en'] || (amenity === 'pharmacy' ? 'Pharmacy' : 'Hospital'),
+          lat: element.lat,
+          lng: element.lon
         }));
 
         setDataByPosition(updatedData);
@@ -206,7 +206,7 @@ const Home: React.FC = () => {
                     <option value="hospital">Hospital</option>
                   </select>
                 </div>
-                <IonButton className="p-2.5 ms-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={handleSearchClick}>
+                <IonButton className="p-2.5 ms-2 text-sm font-medium text-white  rounded-lg  hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={handleSearchClick}>
                   <svg className="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
                   </svg>
@@ -227,10 +227,10 @@ const Home: React.FC = () => {
                         <h6 className="mb-2 font-medium text-gray-700 dark:text-gray-400">{item.name}</h6>
                         <p className="text-gray-500 dark:text-gray-400">{roundDistance(item.distance, 'up')} km away</p>
                       </div>
-                      <Link to={`/detail/lat/${item.lat}/lng/${item.lng}`} onClick={()=> setShowModal(false)}>
-                      <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                      </svg>
+                      <Link to={`/detail/lat/${item.lat}/lng/${item.lng}`} onClick={() => setShowModal(false)}>
+                        <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                        </svg>
                       </Link>
                     </div>
                   ))}

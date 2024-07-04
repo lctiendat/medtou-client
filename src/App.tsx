@@ -1,5 +1,5 @@
 import { Redirect, Route } from 'react-router-dom';
-import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
+import { IonApp, IonIcon, IonLabel, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import Home from './pages/Home';
 
@@ -19,6 +19,8 @@ import '@ionic/react/css/text-alignment.css';
 import '@ionic/react/css/text-transformation.css';
 import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
+import { playCircle, radio, library, search ,homeOutline
+} from 'ionicons/icons';
 
 /**
  * Ionic Dark Mode
@@ -42,15 +44,46 @@ setupIonicReact();
 
 const App: React.FC = () => (
   <IonApp>
-    <IonApp>
     <IonReactRouter>
-      <IonRouterOutlet>
-        <Route path="/home" component={Home} exact={true} />
-        <Route path="/detail/lat/:lat/lng/:lng" component={Detail} exact={true} />
-        <Redirect from="/" to="/home" exact={true} />
-      </IonRouterOutlet>
+      <IonTabs>
+        <IonRouterOutlet>
+          <Redirect exact path="/" to="/home" />
+          {/*
+          Use the render method to reduce the number of renders your component will have due to a route change.
+
+          Use the component prop when your component depends on the RouterComponentProps passed in automatically.
+        */}
+          <Route path="/home" render={() => <Home />} exact={true} />
+          <Route path="/radio" render={() => <Home />} exact={true} />
+          <Route path="/library" render={() => <Home />} exact={true} />
+          <Route path="/search" render={() => <Home />} exact={true} />
+          <Route path="/detail/lat/:lat/lng/:lng" component={Detail} exact={true} />
+
+        </IonRouterOutlet>
+
+        <IonTabBar slot="bottom">
+          <IonTabButton tab="home" href="/home">
+          <IonIcon icon={homeOutline} />
+          <IonLabel>Radio</IonLabel>
+          </IonTabButton>
+
+          <IonTabButton tab="radio" href="/radio">
+            <IonIcon icon={radio} />
+            <IonLabel>Radio</IonLabel>
+          </IonTabButton>
+
+          <IonTabButton tab="library" href="/library">
+            <IonIcon icon={library} />
+            <IonLabel>Library</IonLabel>
+          </IonTabButton>
+
+          <IonTabButton tab="search" href="/search">
+            <IonIcon icon={search} />
+            <IonLabel>Search</IonLabel>
+          </IonTabButton>
+        </IonTabBar>
+      </IonTabs>
     </IonReactRouter>
-  </IonApp>
   </IonApp>
 );
 

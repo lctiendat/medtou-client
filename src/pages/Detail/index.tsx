@@ -28,8 +28,8 @@ const Detail: React.FC = () => {
         lat: 0,
         lng: 0,
     });
+    const [currentAddress, setCurrentAddress] = useState<string>('')
     const [address, setAddress] = useState<string>('');
-    const [dataByPosition, setDataByPosition] = useState<Array<any>>([]);
     const [amenity, setAmenity] = useState<string>('pharmacy');
     const [scope, setScope] = useState<number | string>();
     const [allowLocations, setAllowLocations] = useState<boolean>(false);
@@ -38,6 +38,7 @@ const Detail: React.FC = () => {
     const [showAlert, setShowAlert] = useState(false);
     const [showAlertError, setShowAlertError] = useState(false);
     const [error, setError] = useState<string>('');
+    const [nameMed, setNameMed] = useState<string>('')
 
     const mapRef = useRef(null);
 
@@ -52,6 +53,18 @@ const Detail: React.FC = () => {
         }
     }, []);
 
+
+    useEffect(() => {
+        if (!!lat && !!lng) {
+            const distance = getDistance(
+                { latitude: parseFloat(lat), longitude: parseFloat(lng) },
+                { latitude: currentPosition.lat, longitude: currentPosition.lng }
+            );
+            setScope(Math.round(distance / 10000));
+            getAddressToByLatLon(Number(lat), Number(lng))
+        }
+    }, [])
+
     const checkPermission = async () => {
         try {
             const { location, coarseLocation } = await Geolocation.checkPermissions();
@@ -59,6 +72,7 @@ const Detail: React.FC = () => {
                 setAllowLocations(true);
                 getCurrentPosition();
             } else {
+                await Geolocation.getCurrentPosition();
                 setAllowLocations(false);
                 setShowAlert(true); // Hiển thị cảnh báo nếu không cấp quyền
             }
@@ -95,6 +109,25 @@ const Detail: React.FC = () => {
             const state = address.state || 'N/A';
             const country = address.country || 'N/A';
             const fullAddress = `${houseNumber} ${road}, ${city}, ${state}, ${country}`;
+            setCurrentAddress(fullAddress);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+
+    const getAddressToByLatLon = async (lat: number, lon: number) => {
+        const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&addressdetails=1`;
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
+            const address = data.address;
+            const houseNumber = address.house_number || '';
+            const road = address.road || 'N/A';
+            const city = address.city || address.town || 'N/A';
+            const state = address.state || 'N/A';
+            const country = address.country || 'N/A';
+            const fullAddress = `${houseNumber} ${road}, ${city}, ${state}, ${country}`;
+            setNameMed(address.amenity || 'Medical')
             setAddress(fullAddress);
         } catch (error) {
             console.error('Error:', error);
@@ -106,6 +139,16 @@ const Detail: React.FC = () => {
         const factor = direction === 'up' ? Math.ceil(km * 10) : Math.floor(km * 10);
         return factor / 10;
     };
+
+    const redirectToPosition = () => {
+        if (!!lat && !!lng && !!currentPosition.lat && !!currentPosition.lng) {
+            const origin = { lat, lng }; // Tọa độ bắt đầu
+            const destination = { lat: currentPosition.lat, lng: currentPosition.lng }; // Tọa độ đích
+            const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${origin.lat},${origin.lng}&destination=${destination.lat},${destination.lng}`;
+
+            window.open(googleMapsUrl, '_blank');
+        }
+    }
 
     return (
         <IonPage>
@@ -157,11 +200,11 @@ const Detail: React.FC = () => {
                             </MapContainer>
                         </div>
                         <div className="w-full p-6 py-5 bg-white border border-gray-200 rounded-t-xl shadow dark:bg-gray-800 dark:border-gray-700">
-                            <h6 className='text-xl'>Bệnh viện trung ương Huế <span className='text-gray-400 text-sm'>( 3.2 km)</span></h6>
-                            <p className='text my-3'>Từ : <span className='text-gray-400 text-sm'>1234 Lý Thư��ng Kiệt, Huế, Việt Nam</span></p>
-                            <p className='text my-3'>Đến : <span className='text-gray-400 text-sm'>1234 Lý Thư��ng Kiệt, Huế, Việt Nam</span></p>
+                            <h6 className='text-xl'>{nameMed} <span className='text-gray-400 text-sm'>( {roundDistance(scope, 'up')} km)</span></h6>
+                            <p className='text my-3'>Từ : <span className='text-gray-400 text-sm'>{currentAddress}</span></p>
+                            <p className='text my-3'>Đến : <span className='text-gray-400 text-sm'>{address}</span></p>
                             <div className='flex justify-between my-5'>
-                                <button type="button" className="flex justify-between items-center text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-base px-7 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                <button type="button" className="flex justify-between items-center text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-base px-7 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={redirectToPosition}>
                                     <span>Chỉ đường</span>  <svg className="w-5 h-5 ml-2 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 9H8a5 5 0 0 0 0 10h9m4-10-4-4m4 4-4 4" />
                                     </svg>
@@ -174,7 +217,6 @@ const Detail: React.FC = () => {
                                     </svg>
 
                                 </button>
-
                             </div>
                         </div>
                     </div>

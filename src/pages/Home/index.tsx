@@ -199,7 +199,7 @@ const Home: React.FC = () => {
                 <input required type="number" id="scope" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 h-[50px]" placeholder="Scope" onChange={e => setScope(e.target.value)} />
               </div>
               <div className='my-5'></div>
-              <div className="flex items-center max-w-sm mx-auto">
+              <div className="flex items-center max-w mx-auto">
                 <div className="relative w-full">
                   <select id="type" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 h-[50px]" onChange={e => setAmenity(e.target.value)}>
                     <option value="pharmacy">Pharmacy</option>
@@ -227,7 +227,7 @@ const Home: React.FC = () => {
                         <h6 className="mb-2 font-medium text-gray-700 dark:text-gray-400">{item.name}</h6>
                         <p className="text-gray-500 dark:text-gray-400">{roundDistance(item.distance, 'up')} km away</p>
                       </div>
-                      <Link to={`/detail/lat/${item.lat}/lng/${item.lng}`} onClick={() => setShowModal(false)}>
+                      <Link to={`/detail/lat/${item.lat}/lng/${item.lng}/type/${amenity}`} onClick={() => setShowModal(false)}>
                         <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                         </svg>

@@ -2,7 +2,9 @@ import { Redirect, Route } from 'react-router-dom';
 import { IonApp, IonIcon, IonLabel, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import Home from './pages/Home';
-
+import Ordered from './pages/OrderHistory';
+import Detail from './pages/Detail';
+import Profile from './pages/Profile';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -19,7 +21,8 @@ import '@ionic/react/css/text-alignment.css';
 import '@ionic/react/css/text-transformation.css';
 import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
-import { playCircle, radio, library, search ,homeOutline
+import {
+  playCircle, radio, library, search, homeOutline, carSportOutline, cubeOutline, personOutline
 } from 'ionicons/icons';
 
 /**
@@ -38,7 +41,7 @@ import './theme/variables.css';
 
 /* Initialization tailwind css module */
 import './index.css'
-import Detail from './pages/Detail';
+import BookingProcess from './pages/BookingProcess';
 
 setupIonicReact();
 
@@ -48,38 +51,33 @@ const App: React.FC = () => (
       <IonTabs>
         <IonRouterOutlet>
           <Redirect exact path="/" to="/home" />
-          {/*
-          Use the render method to reduce the number of renders your component will have due to a route change.
-
-          Use the component prop when your component depends on the RouterComponentProps passed in automatically.
-        */}
-          <Route path="/home" render={() => <Home />} exact={true} />
-          <Route path="/radio" render={() => <Home />} exact={true} />
-          <Route path="/library" render={() => <Home />} exact={true} />
-          <Route path="/search" render={() => <Home />} exact={true} />
-          <Route path="/detail/lat/:lat/lng/:lng" component={Detail} exact={true} />
-
+          <Route path="/home" component={Home} exact={true} />
+          <Route path="/radio" component={Home} exact={true} />
+          <Route path="/profile" component={Profile} exact={true} />
+          <Route path="/ordered" component={Ordered} exact={true} />
+          <Route path="/detail/lat/:lat/lng/:lng/type/:type" component={Detail} exact={true} />
+          <Route path="/booking-process/lat/:lat/lng/:lng/type/:type" component={BookingProcess} exact={true} />
         </IonRouterOutlet>
 
         <IonTabBar slot="bottom">
           <IonTabButton tab="home" href="/home">
-          <IonIcon icon={homeOutline} />
-          <IonLabel>Radio</IonLabel>
+            <IonIcon icon={homeOutline} />
+            <IonLabel>Home</IonLabel>
           </IonTabButton>
 
           <IonTabButton tab="radio" href="/radio">
-            <IonIcon icon={radio} />
-            <IonLabel>Radio</IonLabel>
+            <IonIcon icon={carSportOutline} />
+            <IonLabel>Car Booked</IonLabel>
           </IonTabButton>
 
-          <IonTabButton tab="library" href="/library">
-            <IonIcon icon={library} />
-            <IonLabel>Library</IonLabel>
+          <IonTabButton tab="ordered" href="/ordered">
+            <IonIcon icon={cubeOutline} />
+            <IonLabel>Ordered</IonLabel>
           </IonTabButton>
 
-          <IonTabButton tab="search" href="/search">
-            <IonIcon icon={search} />
-            <IonLabel>Search</IonLabel>
+          <IonTabButton tab="profile" href="/profile">
+            <IonIcon icon={personOutline} />
+            <IonLabel>Profile</IonLabel>
           </IonTabButton>
         </IonTabBar>
       </IonTabs>

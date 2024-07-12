@@ -22,7 +22,7 @@ L.Icon.Default.mergeOptions({
 });
 
 const Detail: React.FC = () => {
-    const { lat, lng } = useParams<{ lat: string, lng: string }>();
+    const { lat, lng, type } = useParams<{ lat: string, lng: string, type: string }>();
 
     const [currentPosition, setCurrentPosition] = useState({
         lat: 0,
@@ -211,7 +211,7 @@ const Detail: React.FC = () => {
 
                                 </button>
                                 <button type="button" className="flex justify-between items-center text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-base px-7 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                                    <span> Đặt dịch vụ </span>
+                                    <span>{type === 'pharmacy' ? 'Mua hàng' : 'Đặt xe '} </span>
                                     <svg className="w-5 h-5 text-white ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                                         <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M9 8h10M9 12h10M9 16h10M4.99 8H5m-.02 4h.01m0 4H5" />
                                     </svg>

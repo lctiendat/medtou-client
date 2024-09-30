@@ -1,2 +1,10 @@
 /* For information on how to create your own theme, please see:
 http://ionicframework.com/docs/theming/ */
+
+
+.custom-modal .modal-wrapper {
+    height: auto;
+    min-height: 30%; /* Adjust this value to shorten the modal */
+    max-height: 40%; /* Adjust this value to limit the modal height */
+    padding-bottom: 1rem; /* Add padding to the bottom */
+}

@@ -1,10 +1,12 @@
-import { Redirect, Route } from 'react-router-dom';
+import { Redirect, Route, Router } from 'react-router-dom';
 import { IonApp, IonIcon, IonLabel, IonRouterOutlet, IonTabBar, IonTabButton, IonTabs, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import Home from './pages/Home';
-import Ordered from './pages/OrderHistory';
+import Ordered from './pages/History';
 import Detail from './pages/Detail';
 import Profile from './pages/Profile';
+
+
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -22,7 +24,9 @@ import '@ionic/react/css/text-transformation.css';
 import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
 import {
-  playCircle, radio, library, search, homeOutline, carSportOutline, cubeOutline, personOutline
+  playCircle, radio, library, search, homeOutline, carSportOutline, cubeOutline, personOutline,
+  notificationsOutline,
+  timeOutline
 } from 'ionicons/icons';
 
 /**
@@ -42,47 +46,107 @@ import './theme/variables.css';
 /* Initialization tailwind css module */
 import './index.css'
 import BookingProcess from './pages/BookingProcess';
+import Order from './pages/Order';
+import OrderHistory from './pages/History';
+import { useEffect } from 'react';
+import HeathFacility from './pages/HeathFacility';
+
+import { useHistory, useLocation } from 'react-router-dom';
+import ConfirmBooking from './pages/ConfirmBooking';
+import Login from './pages/Login';
+import { useUser } from './hook/useUser';
+import { useDispatch } from 'react-redux';
+import Notifications from './pages/Notification';
+import ConfirmOrder from './pages/ConfirmOrder';
+import Hospital from './pages/Hospital';
+import Pharmacy from './pages/Pharmacy';
+import Register from './pages/Signup';
+
+
+
 
 setupIonicReact();
 
-const App: React.FC = () => (
-  <IonApp>
+export function hideTabs() {
+  const fabButtonTab = document.querySelector("ion-fab");
+
+
+  if (fabButtonTab) {
+    fabButtonTab.hidden = true;
+  }
+}
+
+export function showTabs() {
+  const fabButtonTab = document.querySelector("ion-fab");
+
+  if (fabButtonTab) {
+    fabButtonTab.hidden = false;
+  }
+}
+
+const routerAuth = ['/login']
+
+
+const App: React.FC = (prop) => {
+  const dispatch = useDispatch();
+  const { loadUser } = useUser()
+
+  useEffect(() => {
+
+    if (!routerAuth.includes(window.location.pathname)) {
+      loadUser()
+      if (!loadUser().isLogin) {
+        window.location.href = '/login'
+      }
+    }
+  }, [dispatch])
+  return <IonApp>
     <IonReactRouter>
       <IonTabs>
         <IonRouterOutlet>
           <Redirect exact path="/" to="/home" />
-          <Route path="/home" component={Home} exact={true} />
-          <Route path="/radio" component={Home} exact={true} />
-          <Route path="/profile" component={Profile} exact={true} />
-          <Route path="/ordered" component={Ordered} exact={true} />
-          <Route path="/detail/lat/:lat/lng/:lng/type/:type" component={Detail} exact={true} />
-          <Route path="/booking-process/lat/:lat/lng/:lng/type/:type" component={BookingProcess} exact={true} />
+          <Route path="/home" component={Home} exact />
+          <Route path="/radio" component={Home} exact />
+          <Route path="/profile" component={Profile} exact />
+          <Route path="/history" component={OrderHistory} exact />
+          <Route path="/order" component={Order} exact />
+          <Route path="/healthfacilitylist" component={HeathFacility} exact />
+          <Route path="/hospital" component={Hospital} exact />
+          <Route path="/pharmacy" component={Pharmacy} exact />
+
+
+          <Route path="/notification" component={Notifications} exact />
+
+          <Route path='/confirm-booking' component={ConfirmBooking} exact />
+          <Route path='/confirm-order' component={ConfirmOrder} exact />
+          <Route path="/booking-process" component={BookingProcess} exact />
+          <Route path="/login" component={Login} exact />
+          <Route path="/signup" component={Register} exact />
+
+
         </IonRouterOutlet>
+
 
         <IonTabBar slot="bottom">
           <IonTabButton tab="home" href="/home">
             <IonIcon icon={homeOutline} />
-            <IonLabel>Home</IonLabel>
           </IonTabButton>
 
-          <IonTabButton tab="radio" href="/radio">
-            <IonIcon icon={carSportOutline} />
-            <IonLabel>Car Booked</IonLabel>
+          <IonTabButton tab="radio" href="/history">
+            <IonIcon icon={timeOutline} />
           </IonTabButton>
 
-          <IonTabButton tab="ordered" href="/ordered">
-            <IonIcon icon={cubeOutline} />
-            <IonLabel>Ordered</IonLabel>
+          <IonTabButton tab="ordered" href="/notification" onClick={()=>{alert("Functionality coming soon")}}>
+            <IonIcon icon={notificationsOutline} />
           </IonTabButton>
 
           <IonTabButton tab="profile" href="/profile">
             <IonIcon icon={personOutline} />
-            <IonLabel>Profile</IonLabel>
           </IonTabButton>
         </IonTabBar>
       </IonTabs>
     </IonReactRouter>
   </IonApp>
-);
+};
 
 export default App;

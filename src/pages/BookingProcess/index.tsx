@@ -1,6 +1,6 @@
 import React from 'react';
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonIcon, IonButton } from '@ionic/react';
-import { copyOutline } from 'ionicons/icons';
+import { callOutline, copyOutline, starHalfOutline } from 'ionicons/icons';
 export default function BookingProcess(params) {
     return (<IonPage>
         <IonHeader className="bg-purple-600">
@@ -9,22 +9,25 @@ export default function BookingProcess(params) {
             </IonToolbar>
         </IonHeader>
         <IonContent className="p-4 bg-gray-100">
-            <div>
+            <div className='p-5'>
                 <h3>Thông tin tài xế</h3>
-                <div>
-                    <p className="text-xs text-gray-500">Name: </p>
-                    <p className="text-sm font-semibold uppercase">lê công tiến đạt</p>
-                </div>
-                <div>
-                    <p className="text-sm text-gray-500">Phone Number:</p>
-                    <div>
-                        <p className="text-lg font-semibold">0766-667-020 </p>
+                <div className='py-5 text-center grid justify-center'>
+                    <img src="https://static.vecteezy.com/system/resources/previews/019/494/965/original/delivery-man-shipping-boy-avatar-user-person-people-service-colored-outline-style-vector.jpg" alt="" className='w-[100px] h-[100px] rounded-full border-2 ' />
+                    <div className='flex justify-center items-center text-center'>
+                        <p className="text-sm font-semibold p-2">3.4 </p>
+                        <IonIcon icon={starHalfOutline} className='text-yellow-600' size='small' />
                     </div>
                 </div>
-                <div>
-                    <p className="text-sm text-gray-500">Rating: </p>
-                    <p className="text-lg font-semibold">123 Main St, Anytown, USA</p>
-
+                <div className='flex justify-between items-center py-2'>
+                    <p className="text-sm text-gray-500">Name: </p>
+                    <p className="text-sm font-semibold uppercase">lê công tiến đạt</p>
+                </div>
+                <div className='flex justify-between items-center py-2'>
+                    <p className="text-sm text-gray-500">Phone Number:</p>
+                    <div className='flex'>
+                        <p className="text-sm font-semibold px-2">0766-667-020 </p>
+                        <IonIcon icon={callOutline} className='text-purple-600' size='small' />
+                    </div>
                 </div>
 
             </div>
@@ -81,7 +84,7 @@ export default function BookingProcess(params) {
                     </div>
                 </div>
                 <IonButton expand="block" className="mt-6 bg-purple-600 text-white">
-                    View Package Info
+                    Cancel delivery
                 </IonButton>
             </div>
         </IonContent>
